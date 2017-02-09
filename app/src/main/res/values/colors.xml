@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorBlue">#0FB8F7</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorRed">#ff0000</color>
+    <color name="colorTabSelected">#1b95e0</color>
+    <color name="colorTabDefault">#8899a6</color>
+    <color name="colorWindowGray">#f4f4f4</color>
+    <color name="colorTitleTopAlpha">#90333333</color><!--标题黑色半透明-->
+    <color name="colorTvInfoContent">#626262</color>
+    <color name="colorItemLine">#f1f0f0</color>
+</resources>
