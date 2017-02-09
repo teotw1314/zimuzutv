@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    android:paddingBottom="4dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
+    <ImageView
+        android:id="@+id/item_subtitle_iv_poster"
+        android:layout_width="105dp"
+        android:layout_height="156dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/no_tv_poster" />
+
+    <TextView
+        android:id="@+id/item_subtitle_tv_cname"
+        style="@style/tvinfo_tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/item_subtitle_iv_poster"
+        android:layout_toRightOf="@id/item_subtitle_iv_poster"
+        android:text="超感猎杀" />
+
+    <TextView
+        android:id="@+id/item_subtitle_str_ename"
+        style="@style/item_subtitle_tv_other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_subtitle_tv_cname"
+        android:layout_toEndOf="@+id/item_subtitle_iv_poster"
+        android:text="原名：" />
+
+    <TextView
+        android:id="@+id/item_subtitle_tv_ename"
+        style="@style/item_subtitle_tv_other_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/item_subtitle_str_ename"
+        android:layout_toEndOf="@+id/item_subtitle_str_ename"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/item_subtitle_str_segment"
+        style="@style/item_subtitle_tv_other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_subtitle_str_ename"
+        android:layout_toEndOf="@+id/item_subtitle_iv_poster"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/item_subtitle_tv_segment"
+        style="@style/item_subtitle_tv_other_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/item_subtitle_str_segment"
+        android:layout_toEndOf="@+id/item_subtitle_str_segment"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/item_subtitle_str_lang"
+        style="@style/item_subtitle_tv_other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_subtitle_tv_segment"
+        android:layout_toEndOf="@+id/item_subtitle_iv_poster"
+        android:text="语言：" />
+
+    <TextView
+        android:id="@+id/item_subtitle_tv_lang"
+        style="@style/item_subtitle_tv_other_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/item_subtitle_str_lang"
+        android:layout_toEndOf="@+id/item_subtitle_str_lang"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/item_subtitle_str_views"
+        style="@style/item_subtitle_tv_other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_subtitle_tv_lang"
+        android:layout_toEndOf="@+id/item_subtitle_iv_poster"
+        android:text="浏览数："
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/item_subtitle_tv_views"
+        style="@style/item_subtitle_tv_other_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/item_subtitle_str_views"
+        android:layout_toEndOf="@+id/item_subtitle_str_views"
+        android:text=""
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/item_subtitle_str_source"
+        style="@style/item_subtitle_tv_other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_subtitle_tv_lang"
+        android:layout_toEndOf="@+id/item_subtitle_iv_poster"
+        android:text="发布者：" />
+
+    <TextView
+        android:id="@+id/item_subtitle_tv_source"
+        style="@style/item_subtitle_tv_other_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/item_subtitle_str_source"
+        android:layout_toEndOf="@+id/item_subtitle_str_source"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/item_subtitle_str_dateline"
+        style="@style/item_subtitle_tv_other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_subtitle_tv_source"
+        android:layout_toEndOf="@+id/item_subtitle_iv_poster"
+        android:text="更新于：" />
+
+    <TextView
+        android:id="@+id/item_subtitle_tv_dateline"
+        style="@style/item_subtitle_tv_other_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/item_subtitle_str_dateline"
+        android:layout_toEndOf="@+id/item_subtitle_str_dateline"
+        android:text="" />
+</RelativeLayout>

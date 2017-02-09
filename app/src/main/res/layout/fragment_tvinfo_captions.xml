@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.skyland.zimuzutv.zimuzutv.Widget.ProgressActivity
+        android:id="@+id/tvinfo_captions_progress"
+        emptyBackgroundColor="#fbc02d"
+        errorBackgroundColor="#42a5f5"
+        loadingBackgroundColor="#FFFFFF"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/tvinfo_captions_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+    </com.skyland.zimuzutv.zimuzutv.Widget.ProgressActivity>
+</FrameLayout>

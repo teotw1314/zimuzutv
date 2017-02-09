@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp">
+
+    <!-- 纵横比（高宽比） 1.5-->
+    <com.skyland.zimuzutv.zimuzutv.Widget.AspectRatioImageView
+        android:id="@+id/item_home_news_poster_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        app:aspectRatio="0.6" />
+
+    <RelativeLayout
+        android:id="@+id/item_home_news_tip_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/item_home_news_poster_iv"
+        android:layout_gravity="bottom"
+        android:background="#4d000000">
+
+        <TextView
+            android:id="@+id/item_home_news_tv_timeline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="2dp"
+            android:text="time_line"
+            android:textColor="@color/colorWhite"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/item_home_news_tv_readed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="2dp"
+            android:text="read_num"
+            android:textColor="@color/colorWhite"
+            android:textSize="12dp" />
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="2dp"
+            android:layout_toLeftOf="@+id/item_home_news_tv_readed"
+            android:src="@drawable/ic_item_news_readed" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/item_home_news_tvTitle"
+        style="@style/TextStyle_news_list_title_context"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_home_news_poster_iv"
+        android:layout_margin="5dp"
+        android:text="news_name" />
+
+</RelativeLayout>

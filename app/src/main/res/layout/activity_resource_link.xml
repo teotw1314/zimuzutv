@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/reslink_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@color/colorWhite"
+        android:gravity="center_vertical"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/reslink_ivback"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:src="@drawable/ic_back" />
+
+            <TextView
+                android:id="@+id/reslink_toolbar_tvtitle"
+                style="@style/toolbar_title_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="资源详情" />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/reslink_season_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/reslink_toolbar"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <me.codeboy.android.aligntextview.AlignTextView
+            android:id="@+id/reslink_tv_name"
+            style="@style/item_resource_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="5dp"
+            android:text="fwaejifewjf" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="40dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_tv_season" />
+
+            <TextView
+                android:id="@+id/reslink_tv_season"
+                style="@style/item_resource_bottomtext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="fsejifjseif" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_resource_type" />
+
+            <TextView
+                android:id="@+id/reslink_tv_type"
+                style="@style/item_resource_bottomtext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="fsejifjseif" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_resource_size" />
+
+            <TextView
+                android:id="@+id/reslink_tv_size"
+                style="@style/item_resource_bottomtext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="fsejifjseif" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/reslink_info_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/reslink_season_layout"
+        android:background="@color/colorWhite">
+
+        <ImageView
+            android:id="@+id/reslink_season_left_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_section_left" />
+
+        <TextView
+            android:id="@+id/reslink_section_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/reslink_season_left_iv"
+            android:text="下载链接（点击按钮复制或分享链接）"
+            android:textColor="@color/colorTvInfoContent"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/reslink_section_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:text=""
+            android:textSize="14dp" />
+    </RelativeLayout>
+
+    <com.skyland.zimuzutv.zimuzutv.Widget.ProgressActivity
+        android:id="@+id/reslink_progress"
+        emptyBackgroundColor="#fbc02d"
+        errorBackgroundColor="#42a5f5"
+        loadingBackgroundColor="#FFFFFF"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorItemLine" />
+
+            <LinearLayout
+                android:id="@+id/reslink_dl_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="28dp"
+                android:paddingRight="28dp"
+                android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/reslink_iv_dl"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_margin="10dp"
+                    app:srcCompat="@drawable/ic_dl" />
+
+                <TextView
+                    android:id="@+id/reslink_tv_dl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="电驴ED2K"
+                    android:textColor="@color/colorTabSelected"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/reslink_btn_dl_copy"
+                    style="@style/link_btn"
+                    android:text="复制" />
+
+                <Button
+                    android:id="@+id/reslink_btn_dl_share"
+                    style="@style/link_btn"
+                    android:text="分享" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorItemLine" />
+
+            <LinearLayout
+                android:id="@+id/reslink_bt_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="28dp"
+                android:paddingRight="28dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_margin="10dp"
+                    app:srcCompat="@drawable/ic_bt" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="BT磁力"
+                    android:textColor="@color/colorTabSelected"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/reslink_btn_bt_copy"
+                    style="@style/link_btn"
+                    android:text="复制" />
+
+                <Button
+                    android:id="@+id/reslink_btn_bt_share"
+                    style="@style/link_btn"
+                    android:text="分享" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorItemLine" />
+
+            <LinearLayout
+                android:id="@+id/reslink_wp_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="28dp"
+                android:paddingRight="28dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_margin="10dp"
+                    app:srcCompat="@drawable/ic_wp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="网盘下载"
+                    android:textColor="@color/colorTabSelected"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/reslink_btn_wp_copy"
+                    style="@style/link_btn"
+                    android:text="复制" />
+
+                <Button
+                    android:id="@+id/reslink_btn_wp_share"
+                    style="@style/link_btn"
+                    android:text="分享" />
+                />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorItemLine" />
+
+            <LinearLayout
+                android:id="@+id/reslink_ct_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="28dp"
+                android:paddingRight="28dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_margin="10dp"
+                    app:srcCompat="@drawable/ic_ct" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="城通网盘"
+                    android:textColor="@color/colorTabSelected"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/reslink_btn_ct_copy"
+                    style="@style/link_btn"
+                    android:text="复制" />
+
+                <Button
+                    android:id="@+id/reslink_btn_ct_share"
+                    style="@style/link_btn"
+                    android:text="分享" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorItemLine" />
+        </LinearLayout>
+    </com.skyland.zimuzutv.zimuzutv.Widget.ProgressActivity>
+</LinearLayout>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.skyland.zimuzutv.zimuzutv.Widget.ProgressActivity xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:toolbar="http://schemas.android.com/tools"
+    android:id="@+id/newsinfo2_progress"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/newsinfo2_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:clipToPadding="false">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            >
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/newsinfo_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:background="@android:color/transparent"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                toolbar:titleMargin="0dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/newsinfo_ivback"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:src="@drawable/ic_back" />
+
+                    <TextView
+                        android:id="@+id/newsinfo_toolbar_tvtitle"
+                        style="@style/toolbar_title_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="" />
+
+                    <ImageView
+                        android:id="@+id/newsinfo_ivshare"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_share" />
+                </RelativeLayout>
+
+            </android.support.v7.widget.Toolbar>
+
+            <com.skyland.zimuzutv.zimuzutv.Widget.AspectRatioImageView
+                android:id="@+id/newsinfo2_iv_poster"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/home_load_error"
+                app:aspectRatio="0.5" />
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/newsinfo2_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:background="@android:color/transparent"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                toolbar:titleMargin="0dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/newsinfo2_ivback"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:src="@drawable/ic_back" />
+
+                    <TextView
+                        android:id="@+id/newsinfo2_toolbar_tvtitle"
+                        style="@style/toolbar_title_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="" />
+
+                    <ImageView
+                        android:id="@+id/newsinfo2_ivshare"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_share" />
+                </RelativeLayout>
+
+            </android.support.v7.widget.Toolbar>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/newsinfo2_iv_poster"
+                android:background="#4d000000"
+                android:orientation="horizontal">
+
+                <me.codeboy.android.aligntextview.AlignTextView
+                    android:id="@+id/newsinfo_title"
+                    style="@style/newsinfo_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:text="title" />
+
+                <TextView
+                    android:id="@+id/newsinfo_dateline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:paddingBottom="10dp"
+                    android:paddingRight="10dp"
+                    android:text="dateline"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <com.skyland.zimuzutv.zimuzutv.RichText.RichText
+                android:id="@+id/newsinfo2_content"
+                style="@style/newsinfo_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/newsinfo2_iv_poster"
+                android:layout_marginTop="10dp"
+                android:fitsSystemWindows="true"
+                android:lineSpacingMultiplier="1.2" />
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+</com.skyland.zimuzutv.zimuzutv.Widget.ProgressActivity>
