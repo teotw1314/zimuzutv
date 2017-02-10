@@ -107,6 +107,7 @@ public class HomeCaptionsFragment extends BaseFragment implements HomeSubtitleFr
     public void loadSubtitleList(SubtitleResultDto data) {
         if(page == 1){
             subtitleList = data.getList();
+            Log.d(TAG, "loadSubtitleList: " + subtitleList.toString());
             adapter.addList(subtitleList);
             adapter.notifyDataSetChanged();
         }else{

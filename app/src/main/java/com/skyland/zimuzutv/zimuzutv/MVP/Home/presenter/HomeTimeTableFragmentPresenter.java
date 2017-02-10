@@ -28,9 +28,9 @@ public class HomeTimeTableFragmentPresenter {
     }
 
     public void loadTimeTableList(boolean isLoad, String cid, String accesskey, String timestamp, String start, String end){
-        mModel.getTimeTableList(isLoad, cid, accesskey, timestamp, start, end, new OnLoadDataListListener<Map.Entry<String, List<TimeTableListDto>>>() {
+        mModel.getTimeTableList(isLoad, cid, accesskey, timestamp, start, end, new OnLoadDataListListener< Map<String, List<Map<String, String>>> >() {
             @Override
-            public void onSuccess(Map.Entry<String, List<TimeTableListDto>> data) {
+            public void onSuccess( Map<String, List<Map<String, String>>> data) {
                 mView.loadList(data);
             }
 

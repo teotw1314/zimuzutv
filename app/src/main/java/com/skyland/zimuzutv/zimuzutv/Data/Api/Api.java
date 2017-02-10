@@ -26,7 +26,6 @@ public class Api {
         Log.d(TAG, "getAccessKey: "+timestamp);
         key = parseStrToMd5L32(Constant.API_CID+"$$"+Constant.API_KEY+"&&"+timestamp);
         return key;
-
     }
 
     //时间戳

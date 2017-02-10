@@ -19,6 +19,7 @@ import com.skyland.zimuzutv.zimuzutv.Util.FileUtil;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import io.rx_cache.DynamicKey;
 import io.rx_cache.EvictDynamicKey;
@@ -36,7 +37,9 @@ import rx.schedulers.Schedulers;
  */
 
 public class HttpData extends RetrofitUtils{
+
     private static final String TAG = "HttpData";
+
     private static File cacheDirectory = FileUtil.getcacheDirectory();
     private static final CacheProviders providers = new RxCache.Builder()
             .persistence(cacheDirectory)
@@ -112,9 +115,9 @@ public class HttpData extends RetrofitUtils{
     }
 
     //获取时间表
-    public void getTimeTableList(boolean isLoad, String cid, String accesskey, String timestamp, String start, String end, Observer<Map.Entry<String, List<TimeTableListDto>>> observer){
-        Observable observable = service.getTimeTableList(cid, accesskey, timestamp, 2, start, end).map(new HttpResultFunc<Map.Entry<String, List<TimeTableListDto>>>());
-        Observable observableCache = providers.getTimeTableList(observable,new DynamicKey("getTimeTableList"+ start + end), new EvictDynamicKey( isLoad )).map(new HttpResultFuncCcche<Map.Entry<String, List<TimeTableListDto>>>());
+    public void getTimeTableList(boolean isLoad, String cid, String accesskey, String timestamp, String start, String end, Observer< Map<String, List<Map<String, String>>> > observer){
+        Observable observable = service.getTimeTableList(cid, accesskey, timestamp, 2, start, end).map(new HttpResultFunc< Map<String, List<Map<String, String>>> >());
+        Observable observableCache = providers.getTimeTableList(observable,new DynamicKey("getTimeTableList"+ start + end), new EvictDynamicKey( isLoad )).map(new HttpResultFuncCcche< Map<String, List<Map<String, String>>> >());
         setSubscribe(observableCache, observer);
     }
 
@@ -142,7 +145,7 @@ public class HttpData extends RetrofitUtils{
 
         @Override
         public T call(HttpResult<T> httpResult) {
-            if (httpResult.getStatus() !=1 ) {
+            if (httpResult.getStatus() != 1 ) {
                 throw new ApiException(httpResult);
             }
             return httpResult.getData();

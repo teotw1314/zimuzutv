@@ -12,12 +12,15 @@ import com.skyland.zimuzutv.zimuzutv.MVP.Entity.TvDetialDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.TvInfoListDto;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import rx.Observable;
+
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * Api接口
@@ -83,7 +86,7 @@ public interface ZimuzuService {
 
     //获取时间表
     @GET("tv/schedule")
-    Observable<HttpResult<Map.Entry<String, List<TimeTableListDto>>>> getTimeTableList(
+    Observable<HttpResult< Map<String, List<Map<String, String>>> >> getTimeTableList(
             @Query("cid")String cid, @Query("accesskey")String accesskey, @Query("timestamp")String timestamp,
             @Query("client")int client,@Query("start")String strat, @Query("end")String end
     );

@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.skyland.zimuzutv.zimuzutv.Constant.Constant;
 import com.skyland.zimuzutv.zimuzutv.Data.Api.Api;
 import com.skyland.zimuzutv.zimuzutv.MVP.Adapter.HomeSubtitleAdapter;
@@ -20,6 +22,7 @@ import com.skyland.zimuzutv.zimuzutv.MVP.Home.view.HomeTimeTableFragmentView;
 import com.skyland.zimuzutv.zimuzutv.R;
 import com.skyland.zimuzutv.zimuzutv.Widget.ProgressActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,8 +35,8 @@ public class HomeTimetableFragment extends BaseFragment implements HomeTimeTable
     private static final String TAG = "HomeTimetableFragment";
     private HomeTimeTableFragmentPresenter mPresenter;
 
-    private String start = "2017-01-06";
-    private String end = "2017-01-06";
+    private String start = "2017-02-09";
+    private String end = "2017-02-10";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,11 +59,40 @@ public class HomeTimetableFragment extends BaseFragment implements HomeTimeTable
         mPresenter = new HomeTimeTableFragmentPresenter(this);
         String timestamp = Api.getTimestamp();
         String key = Api.getAccessKey(timestamp);
-       // mPresenter.loadTimeTableList(true, Constant.API_CID, key, timestamp, start, end);
+        mPresenter.loadTimeTableList(true, Constant.API_CID, key, timestamp, start, end);
     }
 
     @Override
-    public void loadList(Map.Entry<String, List<TimeTableListDto>> mapData) {
-        Log.d(TAG, "loadList: " + String.valueOf("") );
+    public void loadList(Map<String, List<Map<String, String>>> mapData) {
+        Log.d(TAG, "loadList: " + "sfjeifje");
+        List<TimeTableListDto> listData = new ArrayList<TimeTableListDto>();
+        listData = getListData("2017-02-10",mapData);
+        for (int i = 0; i < listData.size(); i++){
+            Log.d(TAG, "loadList: " + listData.get(i).getCnname());
+        }
+
+
     }
+
+    /*
+     *datetime 2017-02-10
+     */
+    private List<TimeTableListDto> getListData(String datetime, Map<String, List<Map<String, String>>> mapData){
+        List<TimeTableListDto> listData = new ArrayList<TimeTableListDto>();
+        List<Map<String, String>> listMap = mapData.get(datetime);
+        int size = listMap.size();
+        for(int i = 0; i < size; i++){
+            TimeTableListDto dto = new TimeTableListDto();
+            Map<String, String> map = listMap.get(i);
+            dto.setId(map.get("id"));
+            dto.setCnname(map.get("cnname"));
+            dto.setEnname(map.get("enname"));
+            dto.setPoster(map.get("poster"));
+            dto.setSeason(map.get("season"));
+            dto.setEpisode(map.get("episode"));
+            listData.add(dto);
+        }
+        return listData;
+    }
+
 }

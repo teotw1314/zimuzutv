@@ -16,7 +16,7 @@ public class HomeTimeTableFragmentModel {
 
     public void getTimeTableList(boolean isLoad, String cid, String accesskey, String timestamp, String start, String end,
                                  final OnLoadDataListListener listener){
-        HttpData.getInstance().getTimeTableList(isLoad, cid, accesskey, timestamp, start, end, new Observer<Map.Entry<String, List<TimeTableListDto>>>() {
+        HttpData.getInstance().getTimeTableList(isLoad, cid, accesskey, timestamp, start, end, new Observer< Map<String, List<Map<String, String>>> >() {
             @Override
             public void onCompleted() {
 
@@ -28,7 +28,7 @@ public class HomeTimeTableFragmentModel {
             }
 
             @Override
-            public void onNext(Map.Entry<String, List<TimeTableListDto>> stringListMap) {
+            public void onNext(Map<String, List<Map<String, String>>>  stringListMap) {
                 listener.onSuccess(stringListMap);
             }
         });

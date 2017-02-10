@@ -68,6 +68,6 @@ public interface CacheProviders {
 
     //获取时间表
     @LifeCache(duration = 7, timeUnit = TimeUnit.DAYS)
-    Observable<Reply<Map.Entry<String, List<TimeTableListDto>>>> getTimeTableList(Observable<Map<String, List<TimeTableListDto>>> oRepos, DynamicKey username, EvictDynamicKey evictDynamicKey);
+    Observable<Reply< Map<String, List<Map<String, String>>> >> getTimeTableList(Observable< Map<String, List<Map<String, String>>> > oRepos, DynamicKey username, EvictDynamicKey evictDynamicKey);
 
 }

@@ -10,5 +10,5 @@ import java.util.Map;
  */
 
 public interface HomeTimeTableFragmentView {
-    void loadList(Map.Entry<String, List<TimeTableListDto>> mapData);
+    void loadList(Map<String, List<Map<String, String>>> mapData);
 }
