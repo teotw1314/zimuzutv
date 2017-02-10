@@ -94,7 +94,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
 
         mNavigationView.setItemIconTintList(null);//设置菜单图标恢复本来的颜色
-        toolbar.setNavigationIcon(R.drawable.ic_toolbar_navigation);
+        //toolbar.setNavigationIcon(R.drawable.ic_toolbar_navigation);  三明治图标
 
         toolbar.inflateMenu(R.menu.toolbar_menu);   //设置右上角填充菜单
 

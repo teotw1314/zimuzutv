@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingBottom="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="5dp">
+
+    <ImageView
+        android:id="@+id/item_timetable_imgv_poster"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        android:scaleType="centerCrop"
+        android:src="@color/colorBlue" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_timetable_tv_cnname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="神盾局特工"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/item_timetable_tv_enname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="原名：shidle"
+            android:textColor="@color/colorTabDefault" />
+
+        <TextView
+            android:id="@+id/item_timetable_tv_jishu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="季度集数：第一季第5集"
+            android:textColor="@color/colorTabDefault" />
+    </LinearLayout>
+</LinearLayout>

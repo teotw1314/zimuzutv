@@ -103,6 +103,9 @@ public class CommomUtil {
         return sb.toString();
     }
 
+    /*
+     *获取当前时间 format "yyyy年MM月dd日   HH:mm:ss"
+     */
     public static String getDate(String format){
         String date = "";
         Date d = new Date(System.currentTimeMillis());

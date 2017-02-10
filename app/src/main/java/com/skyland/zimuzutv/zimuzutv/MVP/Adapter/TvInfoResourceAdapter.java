@@ -62,7 +62,7 @@ public class TvInfoResourceAdapter extends RecyclerView.Adapter<TvInfoResourceAd
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()  {
         return resourceList.size();
     }
 
