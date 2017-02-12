@@ -58,7 +58,7 @@ public class HomeTimetableAdapter extends RecyclerView.Adapter<HomeTimetableAdap
                 .into(holder.imgvPoster );
         holder.tvCnname.setText(data.getCnname());
         holder.tvEnname.setText("原名：" + data.getEnname());
-        holder.tvJishu.setText("集数：第" + data.getSeason() + "季第" + data.getEpisode() + "集");
+        holder.tvJishu.setText("第" + data.getSeason() + "季第" + data.getEpisode() + "集");
         if(clickListener != null){
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

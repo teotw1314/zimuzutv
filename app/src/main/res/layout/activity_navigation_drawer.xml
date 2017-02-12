@@ -29,11 +29,20 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
 
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:src="@mipmap/zmzlogo4" />
+
                     <TextView
                         android:id="@+id/tab_index"
                         style="@style/Theme.ToolBar.Base"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_margin="5dp"
                         android:text="影视资讯" />
 
@@ -42,6 +51,7 @@
                         style="@style/Theme.ToolBar.Base"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_margin="5dp"
                         android:text="字幕更新" />
 
@@ -50,6 +60,7 @@
                         style="@style/Theme.ToolBar.Base"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_margin="5dp"
                         android:text="时间表" />
 
@@ -58,6 +69,7 @@
                         style="@style/Theme.ToolBar.Base"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_margin="5dp"
                         android:text="影视库" />
                 </LinearLayout>
@@ -87,5 +99,4 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/navigation_drawer_header"
         app:menu="@menu/navigation_drawer_menu" />
-
 </android.support.v4.widget.DrawerLayout>
