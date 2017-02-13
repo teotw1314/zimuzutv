@@ -13,7 +13,7 @@ import butterknife.ButterKnife;
  * Created by skyland on 2016/12/1.
  */
 
-public abstract class BaseFragment extends Fragment {
+public abstract class LazyFragment extends Fragment {
 
     protected boolean isVisible;//是否可见
     private View mRootView;
@@ -28,7 +28,26 @@ public abstract class BaseFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initListener();
+
+    }
+    ///实现懒加载
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(getUserVisibleHint()){
+            isVisible = true;
+            onVisible();
+        }else{
+            isVisible = false;
+            onInvisible();
+        }
+    }
+
+    protected void onVisible(){
         initData();
+    }
+    protected void onInvisible(){
+
     }
     protected abstract View initView(LayoutInflater inflater, ViewGroup container);
     protected abstract void initListener();

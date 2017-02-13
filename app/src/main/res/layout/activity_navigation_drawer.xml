@@ -44,7 +44,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_margin="5dp"
-                        android:text="影视资讯" />
+                        android:text="影视资讯"
+                        android:textColor="@color/colorTabSelected" />
 
                     <TextView
                         android:id="@+id/tab_captions"
@@ -53,7 +54,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_margin="5dp"
-                        android:text="字幕更新" />
+                        android:text="字幕更新"
+                        android:textColor="@color/colorTabDefault" />
 
                     <TextView
                         android:id="@+id/tab_timetable"
@@ -62,7 +64,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_margin="5dp"
-                        android:text="时间表" />
+                        android:text="时间表"
+                        android:textColor="@color/colorTabDefault" />
 
                     <TextView
                         android:id="@+id/tab_filmstore"
@@ -71,7 +74,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_margin="5dp"
-                        android:text="影视库" />
+                        android:text="影视库"
+                        android:textColor="@color/colorTabDefault" />
                 </LinearLayout>
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
@@ -88,7 +92,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_timetable_fab" />
+            android:src="@drawable/ic_refresh_fab"
+            app:backgroundTint="@color/colorWhite"
+            app:borderWidth="0dp" />
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView

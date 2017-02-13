@@ -78,7 +78,6 @@ public class TvInfoActivity extends BaseSwipeBackActivity implements TvInfoView 
     private TextView tvTMtype;
 
     private String tvid;
-    private String[] tabTitleArray = {"简介", "播出时间", "资源下载"};
     private List<prevue> prevueList = new ArrayList<prevue>();
     private List<ResourceListDto> resourceList = new ArrayList<ResourceListDto>();
     private int prevueCount = 0;

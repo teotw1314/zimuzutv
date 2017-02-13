@@ -15,6 +15,7 @@ import com.skyland.zimuzutv.zimuzutv.Constant.Constant;
 import com.skyland.zimuzutv.zimuzutv.Data.Api.Api;
 import com.skyland.zimuzutv.zimuzutv.MVP.Adapter.HomeSubtitleAdapter;
 import com.skyland.zimuzutv.zimuzutv.MVP.Base.BaseFragment;
+import com.skyland.zimuzutv.zimuzutv.MVP.Base.LazyFragment;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.SubtitleListDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.SubtitleResInfoDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.SubtitleResultDto;
@@ -30,7 +31,7 @@ import java.util.List;
  * Created by skyland on 2016/12/1.
  */
 
-public class HomeCaptionsFragment extends BaseFragment implements HomeSubtitleFragmentView, SwipeRefreshLayout.OnRefreshListener {
+public class HomeCaptionsFragment extends LazyFragment implements HomeSubtitleFragmentView, SwipeRefreshLayout.OnRefreshListener {
 
     private final String TAG = "HomeCaptionsFragment";
     private HomeSubtitleFragmentPresenter mPresenter;
@@ -48,6 +49,9 @@ public class HomeCaptionsFragment extends BaseFragment implements HomeSubtitleFr
     private int page = 1;
     private int lastVisibleItem;
     private List<SubtitleListDto> subtitleList = new ArrayList<>();
+
+    private boolean isPrepared;
+    private boolean isFirstLoad;
 
 
     @Override
@@ -89,8 +93,12 @@ public class HomeCaptionsFragment extends BaseFragment implements HomeSubtitleFr
 
     @Override
     protected void initData() {
-        mPresenter = new HomeSubtitleFragmentPresenter(this);
-        loadData(false, 1);
+        if(isPrepared && isVisible && isFirstLoad) {
+            isFirstLoad = false;
+            Log.d(TAG, "initData: 2");
+            mPresenter = new HomeSubtitleFragmentPresenter(this);
+            loadData(false, 1);
+        }
     }
 
     @Override
@@ -158,6 +166,11 @@ public class HomeCaptionsFragment extends BaseFragment implements HomeSubtitleFr
         adapter = new HomeSubtitleAdapter(getContext());
         recyclerview.setLayoutManager(layoutManager);
         recyclerview.setAdapter(adapter);
+
+        isPrepared = true;
+        isFirstLoad = true;
+        initData();
+
         return rootView;
     }
 

@@ -34,6 +34,9 @@ public class TvInfoCaptionsFragment extends BaseFragment{
     private List<ResourceListDto> captionsList = new ArrayList<ResourceListDto>();
     private String tvid;
 
+    private boolean isPrepared;
+    private boolean isFirstLoad;
+
     @Override
     protected View initView(LayoutInflater inflater, ViewGroup container) {
         return inflater.inflate(R.layout.fragment_tvinfo_captions,container,false);
@@ -46,6 +49,7 @@ public class TvInfoCaptionsFragment extends BaseFragment{
 
     @Override
     protected void initData() {
+        Log.d(TAG, "initData: captions");
 
         Bundle bundle = getArguments();
         if(bundle != null){

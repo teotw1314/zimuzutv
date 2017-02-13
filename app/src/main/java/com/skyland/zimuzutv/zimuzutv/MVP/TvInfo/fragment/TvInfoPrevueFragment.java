@@ -44,6 +44,7 @@ public class TvInfoPrevueFragment extends BaseFragment{
 
     @Override
     protected void initData() {
+        Log.d(TAG, "initData: prevue");
         Bundle bundle = getArguments();
         prevueList = bundle.getParcelableArrayList("com.skyland.zimuzutv.prevueList");
         prevueCount = bundle.getInt("com.skyland.zimuzutv.prevueCount");

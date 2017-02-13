@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.skyland.zimuzutv.zimuzutv.Data.Api.Api;
 import com.skyland.zimuzutv.zimuzutv.MVP.Adapter.HomeAllAdapter;
 import com.skyland.zimuzutv.zimuzutv.MVP.Base.BaseFragment;
+import com.skyland.zimuzutv.zimuzutv.MVP.Base.LazyFragment;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.BannerDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.NewsInfoListDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.SectionDto;
@@ -39,7 +40,7 @@ import cn.bingoogolapple.bgabanner.BGABanner;
  * Created by skyland on 2016/12/1.
  */
 
-public class HomeNewsFragment extends BaseFragment implements HomeNewsFragmentView, SwipeRefreshLayout.OnRefreshListener{
+public class HomeNewsFragment extends LazyFragment implements HomeNewsFragmentView, SwipeRefreshLayout.OnRefreshListener{
 
     private static final String TAG = "HomeNewsFragment";
     private int newsPage;
@@ -65,6 +66,8 @@ public class HomeNewsFragment extends BaseFragment implements HomeNewsFragmentVi
     public static List<BannerDto> homeBannerList;
     public static List<String> bannerTitle = new ArrayList<String>();
     public static List<String> bannerImage = new ArrayList<String>();
+    private boolean isPrepared;
+    private boolean isFirstLoad;
 
     @Override
     protected View initView(LayoutInflater inflater, ViewGroup container) {
@@ -125,23 +128,28 @@ public class HomeNewsFragment extends BaseFragment implements HomeNewsFragmentVi
 
     @Override
     protected void initData() {
-        isLoaded++;
+        if(isPrepared && isVisible && isFirstLoad){
+            isFirstLoad = false;
+            Log.d(TAG, "initData: 1");
 
-        if(isLoaded > 1){   //加载过一次之后每次加载先清除原本的数据，防止数据重复
-            section1List.clear();
-            section2List.clear();
+            isLoaded++;
+
+            if(isLoaded > 1){   //加载过一次之后每次加载先清除原本的数据，防止数据重复
+                section1List.clear();
+                section2List.clear();
+            }
+            SectionDto section1 = new SectionDto();
+            section1.setName("今日热门");
+            section1List.add(section1);
+
+            SectionDto section2 = new SectionDto();
+            section2.setName("影视资讯");
+            section2List.add(section2);
+
+            mPresenter = new HomeNewsFragmentPresenter(this);
+            newsPage = 1;
+            loadHomeDatas(false);
         }
-        SectionDto section1 = new SectionDto();
-        section1.setName("今日热门");
-        section1List.add(section1);
-
-        SectionDto section2 = new SectionDto();
-        section2.setName("影视资讯");
-        section2List.add(section2);
-
-        mPresenter = new HomeNewsFragmentPresenter(this);
-        newsPage = 1;
-        loadHomeDatas(false);
 
     }
 
@@ -206,7 +214,6 @@ public class HomeNewsFragment extends BaseFragment implements HomeNewsFragmentVi
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
         homeNewsProgress = (ProgressActivity) rootView.findViewById(R.id.home_news_progress);
@@ -241,6 +248,10 @@ public class HomeNewsFragment extends BaseFragment implements HomeNewsFragmentVi
         homeAllRv.setLayoutManager(gridLayoutManager);
         homeAllAdapter = new HomeAllAdapter(getContext(),bannerView);
         homeAllRv.setAdapter(homeAllAdapter);
+
+        isPrepared = true;
+        isFirstLoad = true;
+        initData();
 
         return rootView;
     }

@@ -52,7 +52,7 @@ public class TvInfoResourceFragment extends BaseFragment{
 
     @Override
     protected void initData() {
-
+        Log.d(TAG, "initData: resources");
         Bundle bundle = getArguments();
         if(bundle != null){
             Log.d(TAG, "initData: faejfjewoi");

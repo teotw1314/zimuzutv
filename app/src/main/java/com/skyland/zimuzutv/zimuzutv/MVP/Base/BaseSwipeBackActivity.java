@@ -36,7 +36,7 @@ public abstract class BaseSwipeBackActivity extends SwipeBackActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);  //设置不显示titlebar
+       // requestWindowFeature(Window.FEATURE_NO_TITLE);  //设置不显示titlebar   5.1上会出错
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);  //设置竖屏
         mContext = getApplicationContext();
         initView();

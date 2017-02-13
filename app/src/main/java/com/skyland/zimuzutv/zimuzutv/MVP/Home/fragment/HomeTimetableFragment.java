@@ -19,7 +19,9 @@ import com.skyland.zimuzutv.zimuzutv.Data.Api.Api;
 import com.skyland.zimuzutv.zimuzutv.MVP.Adapter.HomeSubtitleAdapter;
 import com.skyland.zimuzutv.zimuzutv.MVP.Adapter.HomeTimetableAdapter;
 import com.skyland.zimuzutv.zimuzutv.MVP.Base.BaseFragment;
+import com.skyland.zimuzutv.zimuzutv.MVP.Base.LazyFragment;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.TimeTableListDto;
+import com.skyland.zimuzutv.zimuzutv.MVP.Home.HomeActivity;
 import com.skyland.zimuzutv.zimuzutv.MVP.Home.presenter.HomeSubtitleFragmentPresenter;
 import com.skyland.zimuzutv.zimuzutv.MVP.Home.presenter.HomeTimeTableFragmentPresenter;
 import com.skyland.zimuzutv.zimuzutv.MVP.Home.view.HomeTimeTableFragmentView;
@@ -36,17 +38,21 @@ import java.util.Map;
  * Created by skyland on 2016/12/1.
  */
 
-public class HomeTimetableFragment extends BaseFragment implements HomeTimeTableFragmentView{
+public class HomeTimetableFragment extends LazyFragment implements HomeTimeTableFragmentView{
 
     private static final String TAG = "HomeTimetableFragment";
     private HomeTimeTableFragmentPresenter mPresenter;
 
     private RecyclerView recyclerView;
     private HomeTimetableAdapter adapter;
-
+    private FloatingActionButton fab;
+    HomeActivity homeActivity;
     private List<TimeTableListDto> listData = new ArrayList<>();
     private String start = "2017-02-09";
     private String end = "2017-02-10";
+
+    private boolean isPrepared;
+    private boolean isFirstLoad;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,7 +62,14 @@ public class HomeTimetableFragment extends BaseFragment implements HomeTimeTable
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);//设置list 向布局
         adapter = new HomeTimetableAdapter(getContext());
+        fab = (FloatingActionButton) getActivity().findViewById(R.id.home_fab);
         recyclerView.setAdapter(adapter);
+        homeActivity = new HomeActivity();
+
+        isPrepared = true;
+        isFirstLoad = true;
+        initData();
+
         return rootView;
     }
     @Override
@@ -75,15 +88,28 @@ public class HomeTimetableFragment extends BaseFragment implements HomeTimeTable
                 startActivity(intent);
             }
         });
+
+        homeActivity.setFabClickListener(new HomeActivity.FabClickListener() {
+            @Override
+            public void onFabClick(int selectPage) {
+                Toast.makeText(getContext(), String.valueOf(selectPage), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
 
     @Override
     protected void initData() {
-        start = CommomUtil.getDate("yyyy-MM-dd");
-        mPresenter = new HomeTimeTableFragmentPresenter(this);
-        String timestamp = Api.getTimestamp();
-        String key = Api.getAccessKey(timestamp);
-        mPresenter.loadTimeTableList(true, Constant.API_CID, key, timestamp, start, start);
+        if(isPrepared && isVisible && isFirstLoad) {
+            isFirstLoad = false;
+            Log.d(TAG, "initData: 3");
+            start = CommomUtil.getDate("yyyy-MM-dd");
+            mPresenter = new HomeTimeTableFragmentPresenter(this);
+            String timestamp = Api.getTimestamp();
+            String key = Api.getAccessKey(timestamp);
+            mPresenter.loadTimeTableList(false, Constant.API_CID, key, timestamp, start, start);
+        }
     }
 
     @Override
