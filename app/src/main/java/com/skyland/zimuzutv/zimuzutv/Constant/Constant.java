@@ -9,9 +9,9 @@ import com.skyland.zimuzutv.zimuzutv.Util.CommomUtil;
  */
 
 public class Constant {
-    public static String API_SERVER = "http://api.ousns.net/";
-    public static String API_CID = "11";
-    public static String API_KEY = "f1a1a3a891ccdcfd08038c8678dcab53";
+    public static String API_SERVER = "";
+    public static String API_CID = "";
+    public static String API_KEY = "";
 
     public static String WAY_DL = "1";
     public static String WAY_BT = "2";
