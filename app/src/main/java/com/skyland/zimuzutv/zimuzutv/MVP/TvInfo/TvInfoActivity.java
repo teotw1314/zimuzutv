@@ -2,13 +2,10 @@ package com.skyland.zimuzutv.zimuzutv.MVP.TvInfo;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,14 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.skyland.zimuzutv.zimuzutv.Constant.Constant;
 import com.skyland.zimuzutv.zimuzutv.Data.Api.Api;
 import com.skyland.zimuzutv.zimuzutv.MVP.Adapter.ViewPagerAdapter;
-import com.skyland.zimuzutv.zimuzutv.MVP.Base.BaseActivity;
 import com.skyland.zimuzutv.zimuzutv.MVP.Base.BaseSwipeBackActivity;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.ResourceListDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.prevue;
@@ -277,7 +269,7 @@ public class TvInfoActivity extends BaseSwipeBackActivity implements TvInfoView 
         resourceList = resourceListDtos;
         Log.d(TAG, "initView: initViewPager" + String.valueOf(resourceListDtos.size()));
 
-        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), this);
+        viewPagerAdapter = new ViewPagerAdapter(getFragmentManager(), this);
         contentFragment =  new TvInfoContentFragment();
         prevueFragment = new TvInfoPrevueFragment();
         resourceFragment = new TvInfoResourceFragment();

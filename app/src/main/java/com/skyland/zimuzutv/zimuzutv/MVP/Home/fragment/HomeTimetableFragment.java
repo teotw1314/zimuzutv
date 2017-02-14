@@ -1,36 +1,30 @@
 package com.skyland.zimuzutv.zimuzutv.MVP.Home.fragment;
 
+import com.skyland.zimuzutv.zimuzutv.Util.DateUtil;
+import com.skyland.zimuzutv.zimuzutv.Widget.ProgressActivity;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import android.widget.ImageView;
+import android.widget.TextView;
 import com.skyland.zimuzutv.zimuzutv.Constant.Constant;
 import com.skyland.zimuzutv.zimuzutv.Data.Api.Api;
-import com.skyland.zimuzutv.zimuzutv.MVP.Adapter.HomeSubtitleAdapter;
 import com.skyland.zimuzutv.zimuzutv.MVP.Adapter.HomeTimetableAdapter;
-import com.skyland.zimuzutv.zimuzutv.MVP.Base.BaseFragment;
 import com.skyland.zimuzutv.zimuzutv.MVP.Base.LazyFragment;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.TimeTableListDto;
-import com.skyland.zimuzutv.zimuzutv.MVP.Home.HomeActivity;
-import com.skyland.zimuzutv.zimuzutv.MVP.Home.presenter.HomeSubtitleFragmentPresenter;
 import com.skyland.zimuzutv.zimuzutv.MVP.Home.presenter.HomeTimeTableFragmentPresenter;
 import com.skyland.zimuzutv.zimuzutv.MVP.Home.view.HomeTimeTableFragmentView;
 import com.skyland.zimuzutv.zimuzutv.MVP.TvInfo.TvInfoActivity;
 import com.skyland.zimuzutv.zimuzutv.R;
-import com.skyland.zimuzutv.zimuzutv.Util.CommomUtil;
-import com.skyland.zimuzutv.zimuzutv.Widget.ProgressActivity;
-
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -38,18 +32,19 @@ import java.util.Map;
  * Created by skyland on 2016/12/1.
  */
 
-public class HomeTimetableFragment extends LazyFragment implements HomeTimeTableFragmentView{
+public class HomeTimetableFragment extends LazyFragment implements HomeTimeTableFragmentView, DatePickerDialog.OnDateSetListener, View.OnClickListener{
 
     private static final String TAG = "HomeTimetableFragment";
     private HomeTimeTableFragmentPresenter mPresenter;
 
     private RecyclerView recyclerView;
+    private ProgressActivity progress;
+    private ImageView imgvLeft;
+    private ImageView imgvRight;
+    private TextView tvDate;
     private HomeTimetableAdapter adapter;
-    private FloatingActionButton fab;
-    HomeActivity homeActivity;
     private List<TimeTableListDto> listData = new ArrayList<>();
     private String start = "2017-02-09";
-    private String end = "2017-02-10";
 
     private boolean isPrepared;
     private boolean isFirstLoad;
@@ -58,13 +53,15 @@ public class HomeTimetableFragment extends LazyFragment implements HomeTimeTable
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.home_timetable_recyclerview);
+        progress = (ProgressActivity) rootView.findViewById(R.id.timetable_progress);
+        imgvLeft = (ImageView) rootView.findViewById(R.id.timetable_imgv_left);
+        imgvRight = (ImageView) rootView.findViewById(R.id.timetable_imgv_right);
+        tvDate = (TextView) rootView.findViewById(R.id.timetable_tv_date);
         LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);//设置list 向布局
-        adapter = new HomeTimetableAdapter(getContext());
-        fab = (FloatingActionButton) getActivity().findViewById(R.id.home_fab);
+        adapter = new HomeTimetableAdapter(getActivity());
         recyclerView.setAdapter(adapter);
-        homeActivity = new HomeActivity();
 
         isPrepared = true;
         isFirstLoad = true;
@@ -88,15 +85,27 @@ public class HomeTimetableFragment extends LazyFragment implements HomeTimeTable
                 startActivity(intent);
             }
         });
+        imgvLeft.setOnClickListener(this);
+        imgvRight.setOnClickListener(this);
+        tvDate.setOnClickListener(this);
+    }
 
-        homeActivity.setFabClickListener(new HomeActivity.FabClickListener() {
-            @Override
-            public void onFabClick(int selectPage) {
-                Toast.makeText(getContext(), String.valueOf(selectPage), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.timetable_imgv_left:
+                start = DateUtil.getSpecifiedDayBefore(start);
+                loadData();
+                break;
+            case R.id.timetable_imgv_right:
+                start = DateUtil.getSpecifiedDayAfter(start);
+                loadData();
+                break;
+            case R.id.timetable_tv_date:
+                start = DateUtil.getDate("yyyy-MM-dd");
+                loadData();
+                break;
+        }
     }
 
     @Override
@@ -104,28 +113,23 @@ public class HomeTimetableFragment extends LazyFragment implements HomeTimeTable
         if(isPrepared && isVisible && isFirstLoad) {
             isFirstLoad = false;
             Log.d(TAG, "initData: 3");
-            start = CommomUtil.getDate("yyyy-MM-dd");
+            start = DateUtil.getDate("yyyy-MM-dd");
             mPresenter = new HomeTimeTableFragmentPresenter(this);
-            String timestamp = Api.getTimestamp();
-            String key = Api.getAccessKey(timestamp);
-            mPresenter.loadTimeTableList(false, Constant.API_CID, key, timestamp, start, start);
+            loadData();
         }
     }
 
     @Override
     public void loadList(Map<String, List<Map<String, String>>> mapData) {
-        Log.d(TAG, "loadList: " + "sfjeifje");
         listData = getListData(start,mapData);
-        for (int i = 0; i < listData.size(); i++){
-            Log.d(TAG, "loadList: " + listData.get(i).getCnname());
-        }
         adapter.addList(listData);
         adapter.notifyDataSetChanged();
 
-
+        progress.showContent();
     }
 
-    /*getListData  (List<Map> to List<TimeTableListDto> )
+    /*
+     *getListData  (List<Map> to List<TimeTableListDto> )
      *datetime 2017-02-10
      */
     private List<TimeTableListDto> getListData(String datetime, Map<String, List<Map<String, String>>> mapData){
@@ -144,6 +148,48 @@ public class HomeTimetableFragment extends LazyFragment implements HomeTimeTable
             listData.add(dto);
         }
         return listData;
+    }
+
+    ///fab点击事件
+    public void fabTimetableClick(){
+        Log.d(TAG, "fabTimetableClick: sss");
+        Calendar now = Calendar.getInstance();
+        DatePickerDialog dpd = DatePickerDialog.newInstance(
+                HomeTimetableFragment.this,
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH)
+        );
+        dpd.setVersion(DatePickerDialog.Version.VERSION_2);
+        dpd.show(getFragmentManager(),"");
+
+    }
+
+    ///日期选择
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        String month;
+        String day;
+        if (++monthOfYear < 10){
+            month = "0" + monthOfYear;
+        }else{
+            month = String.valueOf(monthOfYear);
+        }
+        if (dayOfMonth < 10){
+            day = "0" + dayOfMonth;
+        }else{
+            day = String.valueOf(dayOfMonth);
+        }
+        start = year + "-" + month + "-" + day;  //dayOfMonth+"/"+(++monthOfYear)+"/"+year;
+        loadData();
+    }
+
+    private  void loadData(){
+        tvDate.setText(start + "  " + DateUtil.getWeekByDate(start));
+        progress.showLoading();
+        String timestamp = Api.getTimestamp();
+        String key = Api.getAccessKey(timestamp);
+        mPresenter.loadTimeTableList(false, Constant.API_CID, key, timestamp, start, start);
     }
 
 }

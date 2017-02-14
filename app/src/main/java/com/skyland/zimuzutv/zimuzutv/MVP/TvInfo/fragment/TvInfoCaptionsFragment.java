@@ -79,7 +79,7 @@ public class TvInfoCaptionsFragment extends BaseFragment{
         LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);//设置list横向布局
-        adapter = new TvInfoResourceAdapter(getContext(),captionsList);
+        adapter = new TvInfoResourceAdapter(getActivity(),captionsList);
         recyclerView.setAdapter(adapter);
 
         adapter.setClickListener(new TvInfoResourceAdapter.OnItemClickListener() {

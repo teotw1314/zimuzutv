@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.skyland.zimuzutv.zimuzutv.MVP.Base.BaseFragment;
 import com.skyland.zimuzutv.zimuzutv.MVP.Base.LazyFragment;
 import com.skyland.zimuzutv.zimuzutv.R;
 
@@ -46,5 +45,10 @@ public class HomeFilmsStoreFragment extends LazyFragment {
             isFirstLoad = false;
             Log.d("initdate", "initData: 4");
         }
+    }
+
+    ///
+    public void fabFilmsClick(){
+
     }
 }

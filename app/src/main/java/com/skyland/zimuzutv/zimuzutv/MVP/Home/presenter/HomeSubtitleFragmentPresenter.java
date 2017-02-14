@@ -19,7 +19,7 @@ public class HomeSubtitleFragmentPresenter {
     public HomeSubtitleFragmentPresenter(HomeSubtitleFragmentView mView){
         this.mView = mView;
         mModel = new HomeSubtitleFragmentModel();
-
+       // mView.showProgress();
     }
 
     public void loadSubtitleList(boolean isLoad, String cid, String accesskey, String timestamp, final int limit, int page){
@@ -27,6 +27,7 @@ public class HomeSubtitleFragmentPresenter {
             @Override
             public void onSuccess(SubtitleResultDto data) {
                 mView.loadSubtitleList(data);
+               // mView.hideProgress();
             }
 
             @Override

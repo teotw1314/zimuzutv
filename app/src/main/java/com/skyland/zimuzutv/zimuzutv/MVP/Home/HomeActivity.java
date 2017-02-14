@@ -1,11 +1,14 @@
 package com.skyland.zimuzutv.zimuzutv.MVP.Home;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -14,6 +17,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +61,12 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     private FloatingActionButton fab;
 
     private ViewPagerAdapter viewPagerAdapter;
-    private List<Fragment> fragments = new ArrayList<>();
+    private HomeNewsFragment homeNewsFragment;
+    private HomeCaptionsFragment homeCaptionsFragment;
+    private HomeTimetableFragment homeTimetableFragment;
+    private HomeFilmsStoreFragment homeFilmsStoreFragment;
+
+    private AnimatorSet fabRefreshAni;
 
     private int currentFragment = 0;
 
@@ -110,12 +119,22 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         //toolbar.setNavigationIcon(R.drawable.ic_toolbar_navigation);  三明治图标
         //toolbar.inflateMenu(R.menu.toolbar_menu);   //设置右上角填充菜单
         //初始化fragment adapter 绑定
-        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), this);
-        viewPagerAdapter.addFragment(new HomeNewsFragment(), "");
-        viewPagerAdapter.addFragment(new HomeCaptionsFragment(), "");
-        viewPagerAdapter.addFragment(new HomeTimetableFragment(), "");
-        viewPagerAdapter.addFragment(new HomeFilmsStoreFragment(), "");
+        viewPagerAdapter = new ViewPagerAdapter(getFragmentManager(), this);
+        viewPager.setOffscreenPageLimit(4);
+        homeNewsFragment = new HomeNewsFragment();
+        homeCaptionsFragment = new HomeCaptionsFragment();
+        homeTimetableFragment = new HomeTimetableFragment();
+        homeFilmsStoreFragment = new HomeFilmsStoreFragment();
+        viewPagerAdapter.addFragment(homeNewsFragment, "");
+        viewPagerAdapter.addFragment(homeCaptionsFragment, "");
+        viewPagerAdapter.addFragment(homeTimetableFragment, "");
+        viewPagerAdapter.addFragment(homeFilmsStoreFragment, "");
         viewPager.setAdapter(viewPagerAdapter);
+
+
+        fabRefreshAni = (AnimatorSet) AnimatorInflater.loadAnimator(getActivityContext(),
+                R.animator.refresh_animator);
+        fabRefreshAni.setTarget(fab);
 
     }
 
@@ -123,7 +142,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     protected Context getActivityContext() {
         return this;
     }
-
+    ///控件点击事件
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -144,10 +163,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 //Toast.makeText(HomeActivity.this, "tab_filmstore", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.home_fab://fab点击事件
-                if (fabClickListener == null)
-                    return;
-                fabClickListener.onFabClick(currentFragment);
-                Toast.makeText(HomeActivity.this, "fab/////////", Toast.LENGTH_SHORT).show();
+                fabClick(currentFragment);
                 break;
 
         }
@@ -215,15 +231,48 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         tab_filmstore.setTextColor(this.getResources().getColor(R.color.colorTabDefault));
     }
 
+    ///fab点击事件处理  调用不同fragment里面暴露的方法
+    private void fabClick(int current){
+        switch (current){
+            case 0:
+                startFabAni();
+                homeNewsFragment.fabNewsClick();
+                break;
+            case 1:
+                startFabAni();
+                homeCaptionsFragment.fabCaptionsClick();
+                break;
+            case 2:
+                homeTimetableFragment.fabTimetableClick();
+                break;
+            case 3:
+                homeFilmsStoreFragment.fabFilmsClick();
+                break;
+        }
+    }
+    public void fabCallBack(int current){
+        /*
+        switch (current){
+            case 0:
+                stopFabAni();
+                break;
+            case 1:
+                stopFabAni();
+                break;
+        }
+        */
+        stopFabAni();
+    }
+    private void startFabAni(){
+        if (!fabRefreshAni.isRunning())
+            fabRefreshAni.start();
+    }
+    private void stopFabAni(){
+        if (fabRefreshAni.isRunning())
+            fabRefreshAni.end();
+    }
 
-    //fab回调接口
-    private FabClickListener fabClickListener;
-    public interface FabClickListener{
-        void onFabClick(int selectPage);
-    }
-    public void setFabClickListener(FabClickListener listener){
-        this.fabClickListener = listener;
-    }
+
 
 
 

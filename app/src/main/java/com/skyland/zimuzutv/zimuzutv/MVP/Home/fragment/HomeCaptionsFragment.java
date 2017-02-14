@@ -19,6 +19,7 @@ import com.skyland.zimuzutv.zimuzutv.MVP.Base.LazyFragment;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.SubtitleListDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.SubtitleResInfoDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.SubtitleResultDto;
+import com.skyland.zimuzutv.zimuzutv.MVP.Home.HomeActivity;
 import com.skyland.zimuzutv.zimuzutv.MVP.Home.presenter.HomeSubtitleFragmentPresenter;
 import com.skyland.zimuzutv.zimuzutv.MVP.Home.view.HomeSubtitleFragmentView;
 import com.skyland.zimuzutv.zimuzutv.R;
@@ -52,7 +53,30 @@ public class HomeCaptionsFragment extends LazyFragment implements HomeSubtitleFr
 
     private boolean isPrepared;
     private boolean isFirstLoad;
+    private boolean isLoading;
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+
+        refreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.home_subtitle_refreshlayout);
+        progress = (ProgressActivity) rootView.findViewById(R.id.home_subtitle_progress);
+        recyclerview = (RecyclerView) rootView.findViewById(R.id.home_subtitle_recyclerview);
+        layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        adapter = new HomeSubtitleAdapter(getActivity());
+        recyclerview.setLayoutManager(layoutManager);
+        recyclerview.setAdapter(adapter);
+
+        progress.showLoading();
+        isLoading = true;
+
+        isPrepared = true;
+        isFirstLoad = true;
+        initData();
+
+        return rootView;
+    }
 
     @Override
     protected View initView(LayoutInflater inflater, ViewGroup container) {
@@ -64,7 +88,7 @@ public class HomeCaptionsFragment extends LazyFragment implements HomeSubtitleFr
         adapter.setClickListener(new HomeSubtitleAdapter.OnItemClickListener() {
             @Override
             public void onClick(View view, SubtitleListDto data) {
-                Toast.makeText(getContext(), data.getCnname(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), data.getCnname(), Toast.LENGTH_SHORT).show();
             }
         });
         refreshLayout.setOnRefreshListener(this);
@@ -77,7 +101,7 @@ public class HomeCaptionsFragment extends LazyFragment implements HomeSubtitleFr
                     if(!isLoadMore){
                         isLoadMore = true;
                         page ++ ;
-                        Toast.makeText(getContext(), "正在加载。。。" + String.valueOf(page), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "正在加载。。。" + String.valueOf(page), Toast.LENGTH_SHORT).show();
                         loadData(true, page);
                     }
                 }
@@ -113,6 +137,9 @@ public class HomeCaptionsFragment extends LazyFragment implements HomeSubtitleFr
 
     @Override
     public void loadSubtitleList(SubtitleResultDto data) {
+        if(isLoading){
+            progress.showContent();
+        }
         if(page == 1){
             subtitleList = data.getList();
             Log.d(TAG, "loadSubtitleList: " + subtitleList.toString());
@@ -126,9 +153,10 @@ public class HomeCaptionsFragment extends LazyFragment implements HomeSubtitleFr
         }
 
         if (isRefresh) {
-            Toast.makeText(getContext(), "字幕更新刷新成功", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "刷新成功", Toast.LENGTH_SHORT).show();
             isRefresh = false;
             refreshLayout.setRefreshing(false);
+            ((HomeActivity)getActivity()).fabCallBack(1);
         }
     }
 
@@ -154,25 +182,7 @@ public class HomeCaptionsFragment extends LazyFragment implements HomeSubtitleFr
 
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
-        refreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.home_subtitle_refreshlayout);
-        progress = (ProgressActivity) rootView.findViewById(R.id.home_subtitle_progress);
-        recyclerview = (RecyclerView) rootView.findViewById(R.id.home_subtitle_recyclerview);
-        layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        adapter = new HomeSubtitleAdapter(getContext());
-        recyclerview.setLayoutManager(layoutManager);
-        recyclerview.setAdapter(adapter);
-
-        isPrepared = true;
-        isFirstLoad = true;
-        initData();
-
-        return rootView;
-    }
 
     @Override
     public void onRefresh() {
@@ -187,10 +197,22 @@ public class HomeCaptionsFragment extends LazyFragment implements HomeSubtitleFr
 
     }
 
+    public void fabCaptionsClick(){
+        if (!isRefresh) {
+            refreshLayout.setRefreshing(true);
+            page = 1;
+            Log.d(TAG, "onRefresh: false,start re");
+            isRefresh = true;
+            loadData(true, 1);
+        }
+    }
+
     private void loadData(boolean isLoad, int pageNum) {
         String timestamp = Api.getTimestamp();
         String key = Api.getAccessKey(timestamp);
         mPresenter.loadSubtitleList(isLoad, Constant.API_CID, key, timestamp, limit, pageNum);
     }
+
+
 
 }

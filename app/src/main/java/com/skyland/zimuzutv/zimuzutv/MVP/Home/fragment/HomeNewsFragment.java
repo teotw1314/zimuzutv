@@ -1,6 +1,7 @@
 package com.skyland.zimuzutv.zimuzutv.MVP.Home.fragment;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -23,6 +24,7 @@ import com.skyland.zimuzutv.zimuzutv.MVP.Entity.BannerDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.NewsInfoListDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.SectionDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.TvInfoListDto;
+import com.skyland.zimuzutv.zimuzutv.MVP.Home.HomeActivity;
 import com.skyland.zimuzutv.zimuzutv.MVP.Home.presenter.HomeNewsFragmentPresenter;
 import com.skyland.zimuzutv.zimuzutv.MVP.Home.view.HomeNewsFragmentView;
 import com.skyland.zimuzutv.zimuzutv.MVP.NewsInfo.NewsInfoActivity;
@@ -56,10 +58,7 @@ public class HomeNewsFragment extends LazyFragment implements HomeNewsFragmentVi
     HomeAllAdapter homeAllAdapter;
     View bannerView;
 
-
-
     private HomeNewsFragmentPresenter mPresenter;
-
 
     private List<SectionDto> section1List = new ArrayList<>();
     private List<SectionDto> section2List = new ArrayList<>();
@@ -68,6 +67,50 @@ public class HomeNewsFragment extends LazyFragment implements HomeNewsFragmentVi
     public static List<String> bannerImage = new ArrayList<String>();
     private boolean isPrepared;
     private boolean isFirstLoad;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+
+        homeNewsProgress = (ProgressActivity) rootView.findViewById(R.id.home_news_progress);
+        swipeRefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.home_news_swipelayout);
+        //typeBannerViewHolder = new TypeBannerViewHolder(rootView);
+
+        bannerView = inflater.inflate(R.layout.multi_typeview_headview,container,false);
+
+        bgaBanner = (BGABanner) bannerView.findViewById(R.id.multi_headview_banner);
+
+        homeAllRv = (RecyclerView) rootView.findViewById(R.id.home_news_rv);
+
+        final GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),4);
+
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup(){
+            @Override
+            public int getSpanSize(int position) {
+                int type = homeAllRv.getAdapter().getItemViewType(position);
+                if (type == HomeAllAdapter.TYPE_HEAD){
+                    return gridLayoutManager.getSpanCount();
+                } else if(type == HomeAllAdapter.TYPE_SECTION1){
+                    return gridLayoutManager.getSpanCount();
+                }else if(type == HomeAllAdapter.TYPE_NEWS){
+                    return 2;
+                }else if(type == HomeAllAdapter.TYPE_SECTION2){
+                    return gridLayoutManager.getSpanCount();
+                }else{
+                    return 1;
+                }
+            }
+        });
+        homeAllRv.setLayoutManager(gridLayoutManager);
+        homeAllAdapter = new HomeAllAdapter(getActivity(),bannerView);
+        homeAllRv.setAdapter(homeAllAdapter);
+
+        isPrepared = true;
+        isFirstLoad = true;
+        initData();
+
+        return rootView;
+    }
 
     @Override
     protected View initView(LayoutInflater inflater, ViewGroup container) {
@@ -199,9 +242,10 @@ public class HomeNewsFragment extends LazyFragment implements HomeNewsFragmentVi
         homeAllAdapter.addList(section1List,hotList,section2List,newsList);
         homeAllAdapter.notifyDataSetChanged();
         if(isRefresh){
-            Toast.makeText(getContext(), "影视资讯刷新成功", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "影视资讯刷新成功", Toast.LENGTH_SHORT).show();
             isRefresh = false;
             swipeRefresh.setRefreshing(false);
+            ((HomeActivity)getActivity()).fabCallBack(0);
         }
 
     }
@@ -212,49 +256,7 @@ public class HomeNewsFragment extends LazyFragment implements HomeNewsFragmentVi
         startActivity(intent);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
-        homeNewsProgress = (ProgressActivity) rootView.findViewById(R.id.home_news_progress);
-        swipeRefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.home_news_swipelayout);
-        //typeBannerViewHolder = new TypeBannerViewHolder(rootView);
-
-        bannerView = inflater.inflate(R.layout.multi_typeview_headview,container,false);
-
-        bgaBanner = (BGABanner) bannerView.findViewById(R.id.multi_headview_banner);
-
-        homeAllRv = (RecyclerView) rootView.findViewById(R.id.home_news_rv);
-
-        final GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),4);
-
-        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup(){
-            @Override
-            public int getSpanSize(int position) {
-                int type = homeAllRv.getAdapter().getItemViewType(position);
-                if (type == HomeAllAdapter.TYPE_HEAD){
-                    return gridLayoutManager.getSpanCount();
-                } else if(type == HomeAllAdapter.TYPE_SECTION1){
-                    return gridLayoutManager.getSpanCount();
-                }else if(type == HomeAllAdapter.TYPE_NEWS){
-                    return 2;
-                }else if(type == HomeAllAdapter.TYPE_SECTION2){
-                    return gridLayoutManager.getSpanCount();
-                }else{
-                    return 1;
-                }
-            }
-        });
-        homeAllRv.setLayoutManager(gridLayoutManager);
-        homeAllAdapter = new HomeAllAdapter(getContext(),bannerView);
-        homeAllRv.setAdapter(homeAllAdapter);
-
-        isPrepared = true;
-        isFirstLoad = true;
-        initData();
-
-        return rootView;
-    }
 
     @Override
     public void rvChangeNotify() {
@@ -297,8 +299,18 @@ public class HomeNewsFragment extends LazyFragment implements HomeNewsFragmentVi
     public void onRefresh() {
         if(!isRefresh){
             isRefresh = true;
+
+        }
+    }
+
+    ///fab
+    public void fabNewsClick(){
+        if(!isRefresh){
+            swipeRefresh.setRefreshing(true);
+            isRefresh = true;
             loadHomeDatas(true);
         }
-
     }
+
+
 }

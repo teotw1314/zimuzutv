@@ -84,7 +84,7 @@ public class TvInfoResourceFragment extends BaseFragment{
         LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);//设置list横向布局
-        adapter = new TvInfoResourceAdapter(getContext(),tvList);
+        adapter = new TvInfoResourceAdapter(getActivity(),tvList);
         recyclerView.setAdapter(adapter);
 
         adapter.setClickListener(new TvInfoResourceAdapter.OnItemClickListener() {

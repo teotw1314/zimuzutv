@@ -9,6 +9,8 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -445,6 +447,14 @@ public class ProgressActivity extends RelativeLayout {
     private void setContentVisibility(boolean visible, List<Integer> skipIds) {
         for (View v : contentViews) {
             if (!skipIds.contains(v.getId())) {
+                /*
+                if(visible){
+                    v.setVisibility(View.VISIBLE);
+                }else{
+                    hideAnimation(v);
+                   // v.setVisibility(View.GONE);
+                }
+                */
                 v.setVisibility(visible ? View.VISIBLE : View.GONE);
             }
         }
@@ -482,5 +492,11 @@ public class ProgressActivity extends RelativeLayout {
             }
 
         }
+    }
+
+    private void hideAnimation(final View v){
+        AlphaAnimation alpha = new AlphaAnimation(0,1); //从不透明变到透明
+        alpha.setDuration(1600);
+        v.startAnimation(alpha);
     }
 }
