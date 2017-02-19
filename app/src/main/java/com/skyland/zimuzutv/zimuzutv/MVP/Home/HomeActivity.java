@@ -78,8 +78,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     private float mPreviousPositionOffset;
     private boolean mViewPagerScrollingLeft;
     private int mPreviousPosition;
-    //fab
-    private float mFabCurrentX;
 
 
     @Override
@@ -145,7 +143,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         fabRefreshAni = (AnimatorSet) AnimatorInflater.loadAnimator(getActivityContext(),
                 R.animator.refresh_animator);
         fabRefreshAni.setTarget(fab);
-        mFabCurrentX = fab.getX();
     }
 
     @Override
@@ -204,15 +201,11 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
      */
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        //Log.d("onPageScrolled", "onPageScrolled: position" + String.valueOf(position));
-        //Log.d("onPageScrolled", "onPageScrolled: " + String.valueOf(mFabCurrentX));
-        //Log.d("onPageScrolled", "onPageScrolled: positionOffset" + String.valueOf(positionOffset));
-       // Log.d("onPageScrolled", "onPageScrolled: positionOffsetPixels" + String.valueOf(positionOffsetPixels));
-        // Scrollling left or right
+
+        // Scrollling left or right  ..did not used//
         if ((positionOffset > mPreviousPositionOffset && position == mPreviousPosition) || (positionOffset < mPreviousPositionOffset && position > mPreviousPosition)) {
             mViewPagerScrollingLeft = true;
         } else if (positionOffset < mPreviousPositionOffset) {
-
             mViewPagerScrollingLeft = false;
         }
         mPreviousPositionOffset = positionOffset;
@@ -225,24 +218,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             fab.setTranslationY( (1-positionOffset) * 500);
         }
 
-
-        // FADE the indicator layout
-        /*
-        if (mViewPagerScrollingLeft) {
-            if(positionOffset < 0.5){
-                fab.setTranslationY(positionOffset*1000);
-            }else{
-                fab.setTranslationY( (1-positionOffset) * 1000);
-            }
-        } else if (!mViewPagerScrollingLeft ) {
-            if( positionOffset < 0.5){
-                fab.setTranslationY(positionOffset*1000);
-            }else{
-                fab.setTranslationY( (1-positionOffset) * 1000);
-            }
-        }
-        */
-
     }
     @Override
     public void onPageSelected(int position) {
@@ -251,15 +226,19 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         switch (position)
         {
             case 0:
+                fab.setImageResource(R.drawable.ic_refresh_fab);
                 tab_index.setTextColor(this.getResources().getColor(R.color.colorTabSelected));
                 break;
             case 1:
+                fab.setImageResource(R.drawable.ic_refresh_fab);
                 tab_captions.setTextColor(this.getResources().getColor(R.color.colorTabSelected));
                 break;
             case 2:
+                fab.setImageResource(R.drawable.ic_timetable_fab);
                 tab_timetable.setTextColor(this.getResources().getColor(R.color.colorTabSelected));
                 break;
             case 3:
+                fab.setImageResource(R.drawable.ic_search_black_24dp);
                 tab_filmstore.setTextColor(this.getResources().getColor(R.color.colorTabSelected));
                 break;
         }
@@ -298,7 +277,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
     public void fabCallBack(int current){
-
         stopFabAni();
     }
     private void startFabAni(){
@@ -310,6 +288,9 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             fabRefreshAni.end();
     }
 
+
+
+    ///双击退出程序
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -317,10 +298,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         }
         return false;
     }
-
-
     private boolean isExit = false;
-
     private void exitBy2Click() {
         Timer timer;
         if (!isExit) {
