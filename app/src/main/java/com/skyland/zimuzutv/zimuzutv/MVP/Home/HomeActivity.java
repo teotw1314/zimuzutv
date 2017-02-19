@@ -2,6 +2,7 @@ package com.skyland.zimuzutv.zimuzutv.MVP.Home;
 
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -18,6 +19,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +42,8 @@ import com.skyland.zimuzutv.zimuzutv.Util.CommomUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 
@@ -69,6 +73,13 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     private AnimatorSet fabRefreshAni;
 
     private int currentFragment = 0;
+
+    ///viewpager
+    private float mPreviousPositionOffset;
+    private boolean mViewPagerScrollingLeft;
+    private int mPreviousPosition;
+    //fab
+    private float mFabCurrentX;
 
 
     @Override
@@ -131,11 +142,10 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         viewPagerAdapter.addFragment(homeFilmsStoreFragment, "");
         viewPager.setAdapter(viewPagerAdapter);
 
-
         fabRefreshAni = (AnimatorSet) AnimatorInflater.loadAnimator(getActivityContext(),
                 R.animator.refresh_animator);
         fabRefreshAni.setTarget(fab);
-
+        mFabCurrentX = fab.getX();
     }
 
     @Override
@@ -194,7 +204,44 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
      */
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        //Log.d("onPageScrolled", "onPageScrolled: position" + String.valueOf(position));
+        //Log.d("onPageScrolled", "onPageScrolled: " + String.valueOf(mFabCurrentX));
+        //Log.d("onPageScrolled", "onPageScrolled: positionOffset" + String.valueOf(positionOffset));
+       // Log.d("onPageScrolled", "onPageScrolled: positionOffsetPixels" + String.valueOf(positionOffsetPixels));
+        // Scrollling left or right
+        if ((positionOffset > mPreviousPositionOffset && position == mPreviousPosition) || (positionOffset < mPreviousPositionOffset && position > mPreviousPosition)) {
+            mViewPagerScrollingLeft = true;
+        } else if (positionOffset < mPreviousPositionOffset) {
 
+            mViewPagerScrollingLeft = false;
+        }
+        mPreviousPositionOffset = positionOffset;
+        mPreviousPosition = position;
+
+        ///fab animation
+        if(positionOffset < 0.5){
+            fab.setTranslationY(positionOffset * 500);
+        }else{
+            fab.setTranslationY( (1-positionOffset) * 500);
+        }
+
+
+        // FADE the indicator layout
+        /*
+        if (mViewPagerScrollingLeft) {
+            if(positionOffset < 0.5){
+                fab.setTranslationY(positionOffset*1000);
+            }else{
+                fab.setTranslationY( (1-positionOffset) * 1000);
+            }
+        } else if (!mViewPagerScrollingLeft ) {
+            if( positionOffset < 0.5){
+                fab.setTranslationY(positionOffset*1000);
+            }else{
+                fab.setTranslationY( (1-positionOffset) * 1000);
+            }
+        }
+        */
 
     }
     @Override
@@ -251,16 +298,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
     public void fabCallBack(int current){
-        /*
-        switch (current){
-            case 0:
-                stopFabAni();
-                break;
-            case 1:
-                stopFabAni();
-                break;
-        }
-        */
+
         stopFabAni();
     }
     private void startFabAni(){
@@ -270,6 +308,34 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     private void stopFabAni(){
         if (fabRefreshAni.isRunning())
             fabRefreshAni.end();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exitBy2Click();
+        }
+        return false;
+    }
+
+
+    private boolean isExit = false;
+
+    private void exitBy2Click() {
+        Timer timer;
+        if (!isExit) {
+            isExit = true;
+            Toast.makeText(HomeActivity.this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    isExit = false;
+                }
+            }, 2000);
+        } else {
+            finish();
+        }
     }
 
 
