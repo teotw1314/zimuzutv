@@ -1,6 +1,7 @@
 package com.skyland.zimuzutv.zimuzutv.Data.Api;
 
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.BannerDto;
+import com.skyland.zimuzutv.zimuzutv.MVP.Entity.FilmsResultDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.HttpResult;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.NewsInfoDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.NewsInfoListDto;
@@ -89,6 +90,15 @@ public interface ZimuzuService {
     Observable<HttpResult< Map<String, List<Map<String, String>>> >> getTimeTableList(
             @Query("cid")String cid, @Query("accesskey")String accesskey, @Query("timestamp")String timestamp,
             @Query("client")int client,@Query("start")String strat, @Query("end")String end
+    );
+
+    //获取影视库列表
+    @GET("resource/fetchlist")
+    Observable<HttpResult<FilmsResultDto>> getFilmsList(
+            @Query("cid")String cid, @Query("accesskey")String accesskey, @Query("timestamp")String timestamp,
+            @Query("client")int client, @Query("channel")String channel, @Query("area")String area,
+            @Query("sort")String sort, @Query("year")String year, @Query("category")String category,
+            @Query("limit")int limit, @Query("page")int page
     );
 
 

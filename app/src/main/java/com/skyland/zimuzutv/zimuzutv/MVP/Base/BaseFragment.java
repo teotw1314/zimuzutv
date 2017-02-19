@@ -14,7 +14,6 @@ import butterknife.ButterKnife;
 
 public abstract class BaseFragment extends Fragment {
 
-    protected boolean isVisible;//是否可见
     private View mRootView;
 
     @Override

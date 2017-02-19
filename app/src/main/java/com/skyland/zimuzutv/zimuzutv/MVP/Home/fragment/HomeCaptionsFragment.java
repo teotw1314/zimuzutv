@@ -142,7 +142,6 @@ public class HomeCaptionsFragment extends LazyFragment implements HomeSubtitleFr
         }
         if(page == 1){
             subtitleList = data.getList();
-            Log.d(TAG, "loadSubtitleList: " + subtitleList.toString());
             adapter.addList(subtitleList);
             adapter.notifyDataSetChanged();
         }else{

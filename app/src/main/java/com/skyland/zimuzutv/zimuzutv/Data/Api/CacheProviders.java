@@ -5,6 +5,7 @@ package com.skyland.zimuzutv.zimuzutv.Data.Api;
  */
 
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.BannerDto;
+import com.skyland.zimuzutv.zimuzutv.MVP.Entity.FilmsResultDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.NewsInfoDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.NewsInfoListDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.ResourceLinkListDto;
@@ -69,5 +70,10 @@ public interface CacheProviders {
     //获取时间表
     @LifeCache(duration = 7, timeUnit = TimeUnit.DAYS)
     Observable<Reply< Map<String, List<Map<String, String>>> >> getTimeTableList(Observable< Map<String, List<Map<String, String>>> > oRepos, DynamicKey username, EvictDynamicKey evictDynamicKey);
+
+    //获取影视库
+    @LifeCache(duration = 7, timeUnit = TimeUnit.DAYS)
+    Observable<Reply<FilmsResultDto>> getFilmsList(Observable<FilmsResultDto> oRepos, DynamicKey username, EvictDynamicKey evictDynamicKey);
+
 
 }

@@ -5,6 +5,7 @@ import com.skyland.zimuzutv.zimuzutv.Data.Api.ZimuzuService;
 import com.skyland.zimuzutv.zimuzutv.Data.Retrofit.ApiException;
 import com.skyland.zimuzutv.zimuzutv.Data.Retrofit.RetrofitUtils;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.BannerDto;
+import com.skyland.zimuzutv.zimuzutv.MVP.Entity.FilmsResultDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.HttpResult;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.NewsInfoDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.NewsInfoListDto;
@@ -118,6 +119,19 @@ public class HttpData extends RetrofitUtils{
     public void getTimeTableList(boolean isLoad, String cid, String accesskey, String timestamp, String start, String end, Observer< Map<String, List<Map<String, String>>> > observer){
         Observable observable = service.getTimeTableList(cid, accesskey, timestamp, 2, start, end).map(new HttpResultFunc< Map<String, List<Map<String, String>>> >());
         Observable observableCache = providers.getTimeTableList(observable,new DynamicKey("getTimeTableList"+ start + end), new EvictDynamicKey( isLoad )).map(new HttpResultFuncCcche< Map<String, List<Map<String, String>>> >());
+        setSubscribe(observableCache, observer);
+    }
+
+    //获取影视库
+    public void getFilmsList(boolean isLoad, String cid, String accesskey, String timestamp,
+                             String channel, String area, String sort, String year, String category,
+                             int limit, int page, Observer<FilmsResultDto> observer){
+        Observable observable = service.getFilmsList(cid, accesskey, timestamp, 2, channel, area,
+                sort, year, category, limit, page).
+                map(new HttpResultFunc<FilmsResultDto>());
+        Observable observableCache = providers.getFilmsList(observable,new DynamicKey("getFilmsList"+ channel +
+                area + sort + year + category + page + limit),
+                new EvictDynamicKey( isLoad )).map(new HttpResultFuncCcche<FilmsResultDto>());
         setSubscribe(observableCache, observer);
     }
 
