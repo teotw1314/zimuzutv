@@ -1,5 +1,6 @@
 package com.skyland.zimuzutv.zimuzutv.MVP.Home.fragment;
 
+import com.skyland.zimuzutv.zimuzutv.MVP.Home.eventbus.HomeFabClickEvent;
 import com.skyland.zimuzutv.zimuzutv.Util.DateUtil;
 import com.skyland.zimuzutv.zimuzutv.Widget.ProgressActivity;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -23,6 +24,11 @@ import com.skyland.zimuzutv.zimuzutv.MVP.Home.presenter.HomeTimeTableFragmentPre
 import com.skyland.zimuzutv.zimuzutv.MVP.Home.view.HomeTimeTableFragmentView;
 import com.skyland.zimuzutv.zimuzutv.MVP.TvInfo.TvInfoActivity;
 import com.skyland.zimuzutv.zimuzutv.R;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -52,6 +58,7 @@ public class HomeTimetableFragment extends LazyFragment implements HomeTimeTable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        EventBus.getDefault().register(this);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.home_timetable_recyclerview);
         progress = (ProgressActivity) rootView.findViewById(R.id.timetable_progress);
         imgvLeft = (ImageView) rootView.findViewById(R.id.timetable_imgv_left);
@@ -151,17 +158,20 @@ public class HomeTimetableFragment extends LazyFragment implements HomeTimeTable
     }
 
     ///fab点击事件
-    public void fabTimetableClick(){
-        Log.d(TAG, "fabTimetableClick: sss");
-        Calendar now = Calendar.getInstance();
-        DatePickerDialog dpd = DatePickerDialog.newInstance(
-                HomeTimetableFragment.this,
-                now.get(Calendar.YEAR),
-                now.get(Calendar.MONTH),
-                now.get(Calendar.DAY_OF_MONTH)
-        );
-        dpd.setVersion(DatePickerDialog.Version.VERSION_2);
-        dpd.show(getFragmentManager(),"");
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void fabTimetableClickEvent(HomeFabClickEvent event){
+        Log.d("event__", "fabCaptionsClickEvent: 3");
+        if(event.tabPositions == 2){
+            Calendar now = Calendar.getInstance();
+            DatePickerDialog dpd = DatePickerDialog.newInstance(
+                    HomeTimetableFragment.this,
+                    now.get(Calendar.YEAR),
+                    now.get(Calendar.MONTH),
+                    now.get(Calendar.DAY_OF_MONTH)
+            );
+            dpd.setVersion(DatePickerDialog.Version.VERSION_2);
+            dpd.show(getFragmentManager(),"");
+        }
 
     }
 
@@ -192,4 +202,9 @@ public class HomeTimetableFragment extends LazyFragment implements HomeTimeTable
         mPresenter.loadTimeTableList(false, Constant.API_CID, key, timestamp, start, start);
     }
 
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
 }

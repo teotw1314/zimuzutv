@@ -20,10 +20,16 @@ import com.skyland.zimuzutv.zimuzutv.MVP.Entity.SubtitleListDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.SubtitleResInfoDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.SubtitleResultDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Home.HomeActivity;
+import com.skyland.zimuzutv.zimuzutv.MVP.Home.eventbus.HomeFabAniEvent;
+import com.skyland.zimuzutv.zimuzutv.MVP.Home.eventbus.HomeFabClickEvent;
 import com.skyland.zimuzutv.zimuzutv.MVP.Home.presenter.HomeSubtitleFragmentPresenter;
 import com.skyland.zimuzutv.zimuzutv.MVP.Home.view.HomeSubtitleFragmentView;
 import com.skyland.zimuzutv.zimuzutv.R;
 import com.skyland.zimuzutv.zimuzutv.Widget.ProgressActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +64,7 @@ public class HomeCaptionsFragment extends LazyFragment implements HomeSubtitleFr
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
-
+        EventBus.getDefault().register(this);
         refreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.home_subtitle_refreshlayout);
         progress = (ProgressActivity) rootView.findViewById(R.id.home_subtitle_progress);
         recyclerview = (RecyclerView) rootView.findViewById(R.id.home_subtitle_recyclerview);
@@ -155,7 +161,7 @@ public class HomeCaptionsFragment extends LazyFragment implements HomeSubtitleFr
             Toast.makeText(getActivity(), "刷新成功", Toast.LENGTH_SHORT).show();
             isRefresh = false;
             refreshLayout.setRefreshing(false);
-            ((HomeActivity)getActivity()).fabCallBack(1);
+            EventBus.getDefault().post(new HomeFabAniEvent(1));
         }
     }
 
@@ -196,13 +202,17 @@ public class HomeCaptionsFragment extends LazyFragment implements HomeSubtitleFr
 
     }
 
-    public void fabCaptionsClick(){
-        if (!isRefresh) {
-            refreshLayout.setRefreshing(true);
-            page = 1;
-            Log.d(TAG, "onRefresh: false,start re");
-            isRefresh = true;
-            loadData(true, 1);
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void fabCaptionsClickEvent(HomeFabClickEvent event){
+        Log.d("event__", "fabCaptionsClickEvent: 1");
+        if(event.tabPositions == 1){
+            if (!isRefresh) {
+                refreshLayout.setRefreshing(true);
+                page = 1;
+                Log.d(TAG, "onRefresh: false,start re");
+                isRefresh = true;
+                loadData(true, 1);
+            }
         }
     }
 
@@ -214,4 +224,9 @@ public class HomeCaptionsFragment extends LazyFragment implements HomeSubtitleFr
 
 
 
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
 }

@@ -25,6 +25,8 @@ import com.skyland.zimuzutv.zimuzutv.MVP.Entity.NewsInfoListDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.SectionDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Entity.TvInfoListDto;
 import com.skyland.zimuzutv.zimuzutv.MVP.Home.HomeActivity;
+import com.skyland.zimuzutv.zimuzutv.MVP.Home.eventbus.HomeFabAniEvent;
+import com.skyland.zimuzutv.zimuzutv.MVP.Home.eventbus.HomeFabClickEvent;
 import com.skyland.zimuzutv.zimuzutv.MVP.Home.presenter.HomeNewsFragmentPresenter;
 import com.skyland.zimuzutv.zimuzutv.MVP.Home.view.HomeNewsFragmentView;
 import com.skyland.zimuzutv.zimuzutv.MVP.NewsInfo.NewsInfoActivity;
@@ -32,6 +34,10 @@ import com.skyland.zimuzutv.zimuzutv.MVP.Test.TestActivity;
 import com.skyland.zimuzutv.zimuzutv.MVP.TvInfo.TvInfoActivity;
 import com.skyland.zimuzutv.zimuzutv.R;
 import com.skyland.zimuzutv.zimuzutv.Widget.ProgressActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +77,7 @@ public class HomeNewsFragment extends LazyFragment implements HomeNewsFragmentVi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
-
+        EventBus.getDefault().register(this);
         homeNewsProgress = (ProgressActivity) rootView.findViewById(R.id.home_news_progress);
         swipeRefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.home_news_swipelayout);
         //typeBannerViewHolder = new TypeBannerViewHolder(rootView);
@@ -245,7 +251,7 @@ public class HomeNewsFragment extends LazyFragment implements HomeNewsFragmentVi
             Toast.makeText(getActivity(), "影视资讯刷新成功", Toast.LENGTH_SHORT).show();
             isRefresh = false;
             swipeRefresh.setRefreshing(false);
-            ((HomeActivity)getActivity()).fabCallBack(0);
+            EventBus.getDefault().post(new HomeFabAniEvent(0) );
         }
 
     }
@@ -299,18 +305,28 @@ public class HomeNewsFragment extends LazyFragment implements HomeNewsFragmentVi
     public void onRefresh() {
         if(!isRefresh){
             isRefresh = true;
-
-        }
-    }
-
-    ///fab
-    public void fabNewsClick(){
-        if(!isRefresh){
-            swipeRefresh.setRefreshing(true);
-            isRefresh = true;
             loadHomeDatas(true);
         }
     }
 
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    //eventbus接收事件，刷新当前fragment
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void fabClickEvent(HomeFabClickEvent event){
+        Log.d("event__", "fabCaptionsClickEvent: 0");
+        Log.d(TAG, "fabClickEvent: " +  String.valueOf(event.tabPositions));
+        if (event.tabPositions == 0){
+            if(!isRefresh){
+                swipeRefresh.setRefreshing(true);
+                isRefresh = true;
+                loadHomeDatas(true);
+            }
+        }
+    }
 
 }

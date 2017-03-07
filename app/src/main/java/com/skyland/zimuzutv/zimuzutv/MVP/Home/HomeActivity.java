@@ -33,12 +33,18 @@ import com.skyland.zimuzutv.zimuzutv.Constant.Constant;
 import com.skyland.zimuzutv.zimuzutv.MVP.Adapter.HomeFragmentAdapter;
 import com.skyland.zimuzutv.zimuzutv.MVP.Adapter.ViewPagerAdapter;
 import com.skyland.zimuzutv.zimuzutv.MVP.Base.BaseActivity;
+import com.skyland.zimuzutv.zimuzutv.MVP.Home.eventbus.HomeFabAniEvent;
+import com.skyland.zimuzutv.zimuzutv.MVP.Home.eventbus.HomeFabClickEvent;
 import com.skyland.zimuzutv.zimuzutv.MVP.Home.fragment.HomeCaptionsFragment;
 import com.skyland.zimuzutv.zimuzutv.MVP.Home.fragment.HomeFilmsStoreFragment;
 import com.skyland.zimuzutv.zimuzutv.MVP.Home.fragment.HomeNewsFragment;
 import com.skyland.zimuzutv.zimuzutv.MVP.Home.fragment.HomeTimetableFragment;
 import com.skyland.zimuzutv.zimuzutv.R;
 import com.skyland.zimuzutv.zimuzutv.Util.CommomUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,6 +130,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             getWindow().getDecorView().setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
+        EventBus.getDefault().register(this);
         //mNavigationView.setItemIconTintList(null);//设置菜单图标恢复本来的颜色
         //toolbar.setNavigationIcon(R.drawable.ic_toolbar_navigation);  三明治图标
         //toolbar.inflateMenu(R.menu.toolbar_menu);   //设置右上角填充菜单
@@ -170,7 +177,10 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 //Toast.makeText(HomeActivity.this, "tab_filmstore", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.home_fab://fab点击事件
-                fabClick(currentFragment);
+                if(currentFragment <=1 ){
+                    fabRefreshAni.start();
+                }
+                EventBus.getDefault().post(new HomeFabClickEvent(currentFragment));
                 break;
 
         }
@@ -257,38 +267,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         tab_filmstore.setTextColor(this.getResources().getColor(R.color.colorTabDefault));
     }
 
-    ///fab点击事件处理  调用不同fragment里面暴露的方法
-    private void fabClick(int current){
-        switch (current){
-            case 0:
-                startFabAni();
-                homeNewsFragment.fabNewsClick();
-                break;
-            case 1:
-                startFabAni();
-                homeCaptionsFragment.fabCaptionsClick();
-                break;
-            case 2:
-                homeTimetableFragment.fabTimetableClick();
-                break;
-            case 3:
-                homeFilmsStoreFragment.fabFilmsClick();
-                break;
-        }
-    }
-    public void fabCallBack(int current){
-        stopFabAni();
-    }
-    private void startFabAni(){
-        if (!fabRefreshAni.isRunning())
-            fabRefreshAni.start();
-    }
-    private void stopFabAni(){
-        if (fabRefreshAni.isRunning())
-            fabRefreshAni.end();
-    }
-
-
 
     ///双击退出程序
     @Override
@@ -316,8 +294,19 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void stopFAbAni(HomeFabAniEvent event){
+        if(event.tabPositions>1){
+            return;
+        }
+        if(fabRefreshAni.isRunning()){
+            fabRefreshAni.end();
+        }
+    }
 
-
-
-
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
 }

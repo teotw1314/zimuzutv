@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="align-text-view-2.3.0">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/me.codeboy.android/align-text-view/2.3.0/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/me.codeboy.android/align-text-view/2.3.0/res" />
+      <root url="file://$USER_HOME$/.android/build-cache/016d0c5319645115e09e8c46c03b1a4bc63b8864/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/016d0c5319645115e09e8c46c03b1a4bc63b8864/output/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

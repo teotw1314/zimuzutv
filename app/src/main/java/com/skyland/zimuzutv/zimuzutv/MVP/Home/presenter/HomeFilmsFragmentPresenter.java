@@ -15,6 +15,7 @@ public class HomeFilmsFragmentPresenter {
     private HomeFilmsFragmentView mView;
 
     public HomeFilmsFragmentPresenter(HomeFilmsFragmentView mView){
+        mView.showProgress();
         this.mView = mView;
         this.mModel = new HomeFilmsFragmentModel();
     }
@@ -27,11 +28,12 @@ public class HomeFilmsFragmentPresenter {
                     @Override
                     public void onSuccess(FilmsResultDto data) {
                         mView.loadFilmsList(data);
+                        mView.hideProgress();
                     }
 
                     @Override
                     public void onFailure(Throwable e) {
-
+                        mView.showLoadFailMsg();
                     }
                 });
 

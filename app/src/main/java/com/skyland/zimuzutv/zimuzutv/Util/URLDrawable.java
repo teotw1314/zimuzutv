@@ -7,7 +7,7 @@ import android.graphics.drawable.Drawable;
 /**
  * Created by skyland on 2016/12/24.
  */
-
+@Deprecated
 public class URLDrawable extends BitmapDrawable {
     // the drawable that you need to set, you could set the initial drawing
     // with the loading image if you need to

@@ -13,7 +13,7 @@
         <android.support.design.widget.TabLayout
             android:id="@+id/home_films_tab"
             android:layout_width="match_parent"
-            android:layout_height="46dp"
+            android:layout_height="32dp"
             android:background="@color/colorWhite"
             app:elevation="0dp"
             app:tabBackground="@color/colorWhite"

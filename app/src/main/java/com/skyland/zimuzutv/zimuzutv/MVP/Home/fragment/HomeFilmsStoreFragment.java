@@ -1,6 +1,11 @@
 package com.skyland.zimuzutv.zimuzutv.MVP.Home.fragment;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,24 +27,28 @@ import java.util.List;
  * Created by skyland on 2016/12/1.
  */
 
-public class HomeFilmsStoreFragment extends LazyFragment implements HomeFilmsFragmentView {
-
-    private HomeFilmsFragmentPresenter mPresenter;
+public class HomeFilmsStoreFragment extends LazyFragment {
 
 
-    private List<FilmsListDto> filmsList = new ArrayList<>();
+    private ViewPagerAdapter mAdapter;
+    private ViewPager mViewPager;
+    private TabLayout mTabLayout;
 
+    //懒加载
     private boolean isPrepared;
     private boolean isFirstLoad;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        mPresenter = new HomeFilmsFragmentPresenter(this);
+        mViewPager = (ViewPager) rootView.findViewById(R.id.home_films_viewpager);
+        mTabLayout = (TabLayout) rootView.findViewById(R.id.home_films_tab);
+        mAdapter = new ViewPagerAdapter(getFragmentManager());
+        mViewPager.setOffscreenPageLimit(mAdapter.getCount());
         isPrepared = true;
         isFirstLoad = true;
         initData();
-
         return rootView;
     }
 
@@ -57,44 +66,49 @@ public class HomeFilmsStoreFragment extends LazyFragment implements HomeFilmsFra
     protected void initData() {
         if(isPrepared && isVisible && isFirstLoad) {
             isFirstLoad = false;
-            loadDate("", "", "", "", "",20,1);
+            mViewPager.setAdapter(mAdapter);
+            mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+            mTabLayout.setupWithViewPager(mViewPager);
         }
     }
 
-    @Override
-    public void showProgress() {
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
 
-    }
-
-    @Override
-    public void hideProgress() {
-
-    }
-
-    @Override
-    public void loadFilmsList(FilmsResultDto data) {
-        filmsList = data.getList();
-        for(int i=0; i<filmsList.size(); i++){
-            Log.d("films", "loadFilmsList: " + filmsList.get(i).getCnname());
+        public ViewPagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
         }
-    }
 
-    @Override
-    public void showLoadFailMsg() {
+        @Override
+        public Fragment getItem(int position) {
+            return new FilmsFragment(position);
+        }
 
-    }
+        @Override
+        public int getCount() {
+            return 7;
+        }
 
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position){
+                case 0:
+                    return "全部";
+                case 1:
+                    return "美剧";
+                case 2:
+                    return "英剧";
+                case 3:
+                    return "电影";
+                case 4:
+                    return "电视剧";
+                case 5:
+                    return "公开课";
+                case 6:
+                    return "纪录片";
 
-    ///
-    private void loadDate( String channel, String area, String sort, String year, String category,
-                           int limit, int page){
-        String timestamp = Api.getTimestamp();
-        String key = Api.getAccessKey(timestamp);
-        mPresenter.loadFilmsList(true, Constant.API_CID, key, timestamp, channel, area, sort, year,category,limit,page);
-    }
-
-    public void fabFilmsClick(){
-
+            }
+            return null;
+        }
     }
 
 
